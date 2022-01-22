@@ -1,0 +1,15 @@
+{
+
+    "hostname": "localhost",
+
+    "database": "weather_data_db",
+
+    "username": "user",
+
+    "password": "password",
+
+    "port": "5432",
+
+    "table": "weather_data"
+
+}
