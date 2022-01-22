@@ -1,7 +1,7 @@
-# weather_api_scraper
-API Consumption Demo
+# Weather API Scraper
 
-# Weather API Scraper 1.0.0
+### Version
+1.0.0
 
 ### Overview
 A CLI application that scrapes weather data from WeatherAPI.com developed as an API consumption demonstration
