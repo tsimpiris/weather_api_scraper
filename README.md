@@ -14,9 +14,9 @@ Ioannis Tsimpiris
 + see requirements.txt for libs
 
 ### Inputs
-+ API Key
++ API Key (from WeatherAPI.com)
 + Location (It could be: lat,long (in decimal degrees) / city name / US zip / UK postcode / iata / IP address)
-+ Date
++ Date (in YYYY-MM-DD format)
 
 ### Outputs
 + Weather data for the given date in the given postgres database/table
@@ -24,5 +24,5 @@ Ioannis Tsimpiris
 ### Usage
 Type the following in the command line:
 ```shell
-> python weather_api_scraper.py
+> python weather_api_scraper.py -k <api_key> -l <city> -d <date>
 ```
