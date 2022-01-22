@@ -1,18 +1,15 @@
 {
-    "api_key": "3d08856bad154e9792e231912222201",
-    "postgres_db": {
 
-        "hostname": "localhost",
+    "hostname": "localhost",
 
-        "database": "weather_data_db",
+    "database": "weather_data_db",
 
-        "username": "user",
+    "username": "user",
 
-        "password": "password",
+    "password": "password",
 
-        "port": "5432",
+    "port": "5432",
 
-        "table": "weather_data"
+    "table": "weather_data"
 
-    }
 }

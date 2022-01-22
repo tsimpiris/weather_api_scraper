@@ -13,9 +13,6 @@ def main():
     # Read user's arguments and store them in a dictionary
     args_dict = user_args()
 
-    # Read user settings and store then in a dictionary
-    settings_dict = load_settings('settings.json')
-
     # Call API and store the weather data in a dictionary
     weather_data_dict = request_weather_data(args_dict)
 
