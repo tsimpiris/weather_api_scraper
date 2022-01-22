@@ -11,10 +11,10 @@ import sqlalchemy
 
 def main():
     # Read user's arguments and store them in a dictionary
-    args_dict = user_args()
+    settings_dict = user_args()
 
     # Call API and store the weather data in a dictionary
-    weather_data_dict = request_weather_data(args_dict)
+    weather_data_dict = request_weather_data(settings_dict)
 
     # Convert the weather data dictionary to a dataframe
     weather_data_df = weather_data_to_df(weather_data_dict)
@@ -27,7 +27,7 @@ def user_args() -> dict:
     """[Handle user args]
 
     Returns:
-        dict: [args_dict contains all the user args e.g. api key, location and forecast's date]
+        dict: [settings_dict contains all the user args e.g. api key, location and forecast's date]
     """
 
     parser = argparse.ArgumentParser()
@@ -39,19 +39,19 @@ def user_args() -> dict:
     args = parser.parse_args()
 
     # Store args in dictionary
-    args_dict = {}
-    args_dict['API_KEY'] = args.api_key
-    args_dict['LOCATION'] = args.location
+    settings_dict = {}
+    settings_dict['API_KEY'] = args.api_key
+    settings_dict['LOCATION'] = args.location
 
     # Validate date - YYYY-MM-DD
     success = validate_date_format(args.date)
 
     if success:
-        args_dict['DATE'] = args.date
+        settings_dict['DATE'] = args.date
     else:
         sys.exit(1)
 
-    return args_dict
+    return settings_dict
 
 
 def validate_date_format(date: str) -> bool:
@@ -73,17 +73,17 @@ def validate_date_format(date: str) -> bool:
     return True
 
 
-def request_weather_data(args_dict: dict) -> dict:
+def request_weather_data(settings_dict: dict) -> dict:
     """[Request data from the WeatherAPI]
 
     Args:
-        args_dict (dict): [It contains all the user args e.g. api key, location and forecast's date]
+        settings_dict (dict): [It contains all the user args e.g. api key, location and forecast's date]
 
     Returns:
         dict: [weather_data_dict contains all the necessary weather data]
     """
 
-    api_url = f'https://api.weatherapi.com/v1/history.json?key={args_dict["API_KEY"]}&q={args_dict["LOCATION"]}&dt={args_dict["DATE"]}'
+    api_url = f'https://api.weatherapi.com/v1/history.json?key={settings_dict["API_KEY"]}&q={settings_dict["LOCATION"]}&dt={settings_dict["DATE"]}'
 
     counter = 0
     while True:
@@ -118,7 +118,7 @@ def request_weather_data(args_dict: dict) -> dict:
 
     # Add more keys/data
     weather_data_dict['condition'] = weather_data_dict['condition']['text']
-    weather_data_dict['date'] = args_dict['DATE']
+    weather_data_dict['date'] = settings_dict['DATE']
     weather_data_dict['date_epoch'] = weather_data['date_epoch']
 
     return weather_data_dict
