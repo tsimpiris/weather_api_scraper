@@ -6,7 +6,7 @@ import datetime
 
 import requests
 import pandas as pd
-from sqlalchemy import create_engine
+import sqlalchemy
 
 
 def main():
@@ -87,26 +87,25 @@ def request_weather_data(args_dict: dict) -> dict:
 
     counter = 0
     while True:
-        try:
-            if counter <= 5:
+        if counter <= 5:
+            try:
                 response = requests.get(api_url)
-            else:
-                print('Unable to get data from the API - Aborting...')
-                sys.exit(1)
-
-            if response.status_code == 200:
-                break
-            else:
-                print(f'ERROR: Status Code: {response.status_code} - Retry in 1 hr')
+                if response.status_code == 200:
+                    break
+                else:
+                    print(f'ERROR: Status Code: {response.status_code} - Retry in 1 hr')
+                    time.sleep(3600)
+                    counter += 1
+                    continue
+            except Exception as e:
+                print(e)
+                print('Retry in 1 hr')
                 time.sleep(3600)
                 counter += 1
                 continue
-        except Exception as e:
-            print(e)
-            print('Retry in 1 hr')
-            time.sleep(3600)
-            counter += 1
-            continue
+        else:
+            print('Unable to get data from the API - Aborting...')
+            sys.exit(1)
 
     # Filter the response/weather data
     weather_data = response.json()['forecast']['forecastday'][0]
@@ -143,22 +142,26 @@ def weather_data_to_db(weather_data_df: pd.DataFrame) -> None:
     
     counter = 0
     while True:
-        try:
-            if counter <= 5:
-                # Create engine/connection for the postgres database
-                engine = create_engine(f'postgresql://{db_settings["username"]}:{db_settings["password"]}@{db_settings["hostname"]}:{db_settings["port"]}/{db_settings["database"]}')
-                # Store the data to the database
-                weather_data_df.to_sql(f'{db_settings["table"]}', engine)
-                break
-            else:
-                print(f'Unable to save the data for {weather_data_df["date"].iloc[0]} to the database - Aborting...')
-                sys.exit(1)
-        except Exception as e:
-            print(e)
-            print(f'Unable to save the data for {weather_data_df["date"].iloc[0]} to the database - Retry in 30 mins')
-            time.sleep(1800)
-            counter += 1
-            continue
+        if counter <= 5:
+            try:
+                
+                    # Create engine/connection for the postgres database
+                    engine = sqlalchemy.create_engine(f'postgresql://{db_settings["username"]}:{db_settings["password"]}@{db_settings["hostname"]}:{db_settings["port"]}/{db_settings["database"]}')
+                    if not engine.dialect.has_schema(engine, db_settings['schema']):
+                        engine.execute(sqlalchemy.schema.CreateSchema(db_settings['schema']))
+                    # Store the data to the database
+                    weather_data_df.to_sql(f'{db_settings["table"]}', engine, schema=db_settings['schema'], if_exists='append')
+                    break
+                
+            except Exception as e:
+                print(e)
+                print(f'Unable to save the data for {weather_data_df["date"].iloc[0]} to the database - Retry in 30 mins')
+                time.sleep(1800)
+                counter += 1
+                continue
+        else:
+            print(f'Unable to save the data for {weather_data_df["date"].iloc[0]} to the database - Aborting...')
+            sys.exit(1)
 
 
 def load_settings(jsonpath: str) -> dict:
