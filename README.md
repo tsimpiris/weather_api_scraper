@@ -24,5 +24,5 @@ Ioannis Tsimpiris
 ### Usage
 Type the following in the command line:
 ```shell
-> python weather_api_scraper.py -k <api_key> -l <city> -d <date>
+> python weather_api_scraper.py -k <api_key> -l <location> -d <date>
 ```
