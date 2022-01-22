@@ -10,14 +10,18 @@ from sqlalchemy import create_engine
 
 
 def main():
+    # Read user's arguments and store them in a dictionary
     settings_dict = user_args()
 
+    # Call API and store the weather data in a dictionary
     weather_data_dict = request_weather_data(settings_dict)
 
+    # Convert the weather data dictionary to a dataframe
     weather_data_df = weather_data_to_df(weather_data_dict)
 
+    # Save the data in a postgres database
     weather_data_to_db(weather_data_df)
-    # 5. store in postgres
+
 
 def user_args() -> dict:
     """[Handle user args]
