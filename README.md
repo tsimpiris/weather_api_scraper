@@ -4,7 +4,7 @@
 1.0.0
 
 ### Overview
-A CLI application that scrapes weather data from WeatherAPI.com developed as an API consumption demonstration
+A CLI application that scrapes weather data from WeatherAPI.com, developed as an API consumption demonstration, and stores it to the given postgres database/table.
 
 ### Developer
 Ioannis Tsimpiris
