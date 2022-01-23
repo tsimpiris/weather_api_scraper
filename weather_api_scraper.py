@@ -100,6 +100,7 @@ def request_weather_data(settings_dict: dict) -> dict:
             try:
                 response = requests.get(api_url)
                 if response.status_code == 200:
+                    print('Weather data recieved from the API successfully')
                     break
                 else:
                     print(
@@ -124,8 +125,8 @@ def request_weather_data(settings_dict: dict) -> dict:
     # Remove not needed data/dict keys
     keys_lst = ['mintemp_f', 'maxtemp_f', 'avgtemp_f',
                 'maxwind_mph', 'totalprecip_in', 'avgvis_miles']
-    for item in keys_lst:
-        del weather_data_dict[item]
+    weather_data_dict = {key: value for (
+        key, value) in weather_data_dict.items() if not key in keys_lst}
 
     # Add more keys/data
     weather_data_dict['condition'] = weather_data_dict['condition']['text']
@@ -163,8 +164,11 @@ def weather_data_to_db(weather_data_df: pd.DataFrame, db_settings: dict) -> None
                 # Store the data to the database
                 weather_data_df.to_sql(
                     f'{db_settings["table"]}', engine, schema=db_settings['schema'], if_exists='append', index=False)
-                break
 
+                print(
+                    f'Data for {weather_data_df["date"].iloc[0]} appended in the database')
+
+                break
             except Exception as e:
                 print(e)
                 print(
