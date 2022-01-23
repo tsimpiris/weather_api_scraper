@@ -2,10 +2,12 @@
 
 ### Overview
 A CLI application that scrapes weather data from WeatherAPI.com, developed as an API consumption demonstration, and stores it to the given postgres database/table.
-Developed in Python 3.10.1 (see requirements.txt)
 
 ### Version
 1.0.0
+### Dependencies
++ Python: 3.10.1
++ see requirements.txt
 
 ### Inputs
 + API Key (from WeatherAPI.com)
