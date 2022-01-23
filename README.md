@@ -1,7 +1,8 @@
 # Weather API Scraper
 
 ### Overview
-A CLI application that scrapes weather data from WeatherAPI.com, developed as an API consumption demonstration, and stores it to the given postgres database/table.
+A CLI application that scrapes weather data from WeatherAPI.com, developed as an API consumption demonstration, and stores it to the given postgres database/table.<br />
+The idea is to create a weather history database for a specific location by creating a bash script to call the python scraper daily (using crontab), requesting weather data for yesterday.
 
 ### Version
 1.0.0
